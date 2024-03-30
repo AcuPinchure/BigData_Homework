@@ -1,4 +1,4 @@
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import PostSerializer, RankItemSerializer
@@ -49,7 +49,9 @@ def createPost(request):
     for rank_item in rank_serializer.validated_data:
         RankItem.objects.create(post=post, **rank_item)
 
-    return Response(serializePostByID(post.id), status=status.HTTP_400_BAD_REQUEST)
+    print(post.id)
+
+    return Response(serializePostByID(post.id), status=status.HTTP_200_OK)
 
 
 @api_view(['PUT'])
