@@ -45,6 +45,8 @@ def createPost(request):
         return Response({"detail": "Rank items in the list must be 10"}, status=status.HTTP_400_BAD_REQUEST)
     
     # if the post data and rank item is valid, save the post and rank items
+    # overwrite the modify_user field with the current user
+    post_serializer.modify_user = request.user.id
     post = post_serializer.save()
     for rank_item in rank_serializer.validated_data:
         RankItem.objects.create(post=post, **rank_item)
@@ -82,6 +84,8 @@ def updatePost(request, post_id):
 
     
     # if the post data and rank item data is valid, save the post and rank items
+    # overwrite the modify_user field with the current user
+    post_serializer.modify_user = request.user.id
     post_serializer.save()
     for rank_item in bulk_update_rank_items:
         rank_item.save()
