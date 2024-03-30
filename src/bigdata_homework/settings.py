@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 
 # use external settings_local.py file to seperate development and production settings
-import settings_local
+from . import settings_local
 
 # the root directory of the project
 SRC_DIR = Path(__file__).resolve().parent.parent
@@ -23,7 +23,7 @@ SRC_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-9xi+45#(0+5v*8uf!2gk6j)o@ml*61cznbi=xzvq($#1g9hjge'
+SECRET_KEY = settings_local.SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = settings_local.DEBUG
@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'post_management',
 ]
 
 MIDDLEWARE = [
