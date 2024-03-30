@@ -1,0 +1,17 @@
+# DB and files
+local_data/
+
+# django
+*.log
+settings_local.py
+
+# python
+venv/
+*.pot
+*.pyc
+__pycache__
+.python-version
+
+# vs code
+.vscode/
+
