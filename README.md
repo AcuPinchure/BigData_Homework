@@ -23,7 +23,7 @@ Include the JWT Token in the request Header
 Authorization: Bearer <JWT Token>
 ```
 ### Request Body
-The complete post data, with 3 parts, sending data with any of the part missing will be rejected:
+The complete post data, with 3 parts, requests with any of the part missing will be rejected:
 1. metadata - the metadata of the posts, including:
     - title
     - description

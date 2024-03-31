@@ -63,7 +63,11 @@ def updatePost(request, post_id):
     # extract rank list from post data
     rank_list = post_data.pop('rank_list')
 
-    post = Post.objects.get(id=post_id)
+    try:
+        post = Post.objects.get(id=post_id)
+    except Post.DoesNotExist:
+        return Response({"detail": "Post not found"}, status=status.HTTP_404_NOT_FOUND)
+    
     post_serializer = PostSerializer(instance=post, data=post_data)
     post_serializer.is_valid(raise_exception=True)
 
@@ -74,7 +78,7 @@ def updatePost(request, post_id):
     # but creating new rank items is not allowed
     for idx, modifying_rank_item in enumerate(rank_list):
         try:
-            rank_item = RankItem.objects.get(id=modifying_rank_item['id'])
+            rank_item = RankItem.objects.get(id=modifying_rank_item['id'],post=post)
         except RankItem.DoesNotExist:
             return Response({"detail": f"The {idx+1} Rank item ID ({modifying_rank_item['id']}) does not match any instance in DB"}, status=status.HTTP_404_NOT_FOUND)
         rank_item_serializer = RankItemSerializer(instance=rank_item, data=modifying_rank_item)
