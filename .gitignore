@@ -3,7 +3,6 @@ local_data/
 
 # django
 *.log
-settings_local.py
 
 # python
 venv/
