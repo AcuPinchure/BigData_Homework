@@ -4,13 +4,94 @@ This repository is a demo project for BigData company interview.
 
 The Goal of this project is to create a simplfied replica CRUD API for posts on [DailyViewTW website](https://dailyview.tw/).
 
+# Setup
+
+To setup this demo project for testing, follow the steps:
+1. Clone this repository
+2. cd to the project root directory
+3. Run docker compose command (make sure docker and docker compose is installed in your machine)
+    ```bash
+    docker compose up -d
+    ```
+4. The service will startup and create a default super user with username `djangoadmin` and password `djangoadmin`
+5. Follow the [API documentation](#api-documentation) to make testing requests
+
+
 
 # API Documentation
-There are 4 APIs in `post_management` app:
-- [create a post](#create-a-post)
-- [retrieve a post by ID](#retrieve-a-post-by-id)
-- [update a post by ID](#update-a-post-by-id)
-- [delete a post by ID](#delete-a-post-by-id)
+There are 6 APIs in `post_management` app:
+- [Get JWT Token](#get-jwt-token)
+- [Refresh JWT Token](#refresh-jwt-token)
+- [Create a post](#create-a-post)
+- [Retrieve a post by ID](#retrieve-a-post-by-id)
+- [Update a post by ID](#update-a-post-by-id)
+- [Delete a post by ID](#delete-a-post-by-id)
+
+## Get JWT Token
+Authenticating to the API, and obtain the JWT token and refresh token
+### URL
+```
+POST /PM/api/token/get/
+```
+### Request Body
+Username and Password
+### Example Request
+```JavaScript
+fetch("/PM/api/token/get/", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+        "username": "djangoadmin",
+        "password": "djangoadmin"
+    })
+})
+
+```
+### Example Response
+The `access` is the JWT token that Authorization Header requires
+The `access` token will expire in 5 minutes, [refresh the token](#refresh-jwt-token) to extend authorization duration.
+```JSON
+{
+    "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTcxMTk1NTQ2NCwiaWF0IjoxNzExODY5MDY0LCJqdGkiOiJkMWY0Y2JhOTgzM2Y0ODQ0YjNjNzBiODdiN2U3ZWVjMiIsInVzZXJfaWQiOjF9.c0HwU7ip8b-vCxhfTkX7xlKKWTVbk2miSZpG5zcQixM",
+    "access": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzExODY5MzY0LCJpYXQiOjE3MTE4NjkwNjQsImp0aSI6ImE1ZjA0Y2JmMzE1MTRhNGI4MTM3M2QwZDkzZGFkMmIzIiwidXNlcl9pZCI6MX0.GQeYSEqehkygRAZC3E7zIMM9tfukA8Bl8as7E6UYR_k"
+}
+```
+
+## Refresh JWT Token
+Obtaining a new access token with refresh token.
+Refresh token will expired in 24 hours, [reauthenticate](#get-jwt-token) to obtain a new refresh token.
+### URL
+```
+POST /PM/api/token/refresh/
+```
+### Authorization Type
+Include the JWT Token in the request Header
+```
+Authorization: Bearer <JWT Token>
+```
+### Request Body
+Refresh token
+### Example Request
+```JavaScript
+fetch("/PM/api/token/refresh/", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+        "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTcxMTk1NTYxNCwiaWF0IjoxNzExODY5MjE0LCJqdGkiOiIyZGQ1MWI2OWY4YTI0M2E2OTMyZWNkNGIwMjQxZDJiZCIsInVzZXJfaWQiOjF9.oLB8ZkNB2-pTneCrmupn34h2MvuVnsXu7aySCOhR1OQ"
+    })
+})
+
+```
+### Example Response
+```JSON
+{
+    "access": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzExODY5NTY3LCJpYXQiOjE3MTE4NjkyMTQsImp0aSI6IjgwZGQxNGRiZTVkYTQzZDVhOTY5YTEwYjA3YjExZjJlIiwidXNlcl9pZCI6MX0.SHmkxaQ9RnIDCOsAO6c9ZT1SIK-yPfxhZ03jJ8fHt6o"
+}
+```
 
 ## Create a Post
 ### URL
