@@ -14,7 +14,8 @@ To setup this demo project for testing, follow the steps:
     docker compose up -d
     ```
 4. The service will startup and create a default super user with username `djangoadmin` and password `djangoadmin`
-5. Follow the [API documentation](#api-documentation) to make testing requests
+5. Access the server through hostname `localhost:8000`
+6. Follow the [API documentation](#api-documentation) to make testing requests
 
 
 
