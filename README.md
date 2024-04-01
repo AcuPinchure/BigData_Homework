@@ -9,7 +9,7 @@ The Goal of this project is to create a simplfied replica CRUD API for posts on 
 To setup this demo project for testing, follow the steps:
 1. Clone this repository
 2. cd to the project root directory
-3. Run docker compose command (make sure docker and docker compose is installed in your machine)
+3. The root folder contains compose yaml file. Simply run docker compose command to setup containers (make sure docker and docker compose is installed in your machine)
     ```bash
     docker compose up -d
     ```
@@ -22,7 +22,7 @@ To setup this demo project for testing, follow the steps:
 
 
 # API Documentation
-There are 6 APIs in `post_management` app:
+There are 6 APIs in `post_management` app. Except `Get JWT Token`, all other APIs require JWT to access:
 - [Get JWT Token](#get-jwt-token)
 - [Refresh JWT Token](#refresh-jwt-token)
 - [Create a post](#create-a-post)
@@ -53,7 +53,7 @@ fetch("/PM/api/token/get/", {
 
 ```
 ### Example Response
-The `access` is the JWT token that Authorization Header requires
+The `access` is the JWT token that Authorization Header requires.
 The `access` token will expire in 5 minutes, [refresh the token](#refresh-jwt-token) to extend authorization duration.
 ```JSON
 {
@@ -82,6 +82,7 @@ fetch("/PM/api/token/refresh/", {
     method: "POST",
     headers: {
         "Content-Type": "application/json",
+        "Authorization": "Bearer xxxxxx.xxxxxxxx.xxxxxxxx"
     },
     body: JSON.stringify({
         "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTcxMTk1NTYxNCwiaWF0IjoxNzExODY5MjE0LCJqdGkiOiIyZGQ1MWI2OWY4YTI0M2E2OTMyZWNkNGIwMjQxZDJiZCIsInVzZXJfaWQiOjF9.oLB8ZkNB2-pTneCrmupn34h2MvuVnsXu7aySCOhR1OQ"
